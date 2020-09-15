@@ -1,0 +1,22 @@
+version: '3'
+services:
+  application:
+    image: node:latest
+    volumes:
+      - ./docker/application:/var/app
+    command: node /var/app/server.js
+    networks:
+      - internal
+  proxy:
+    image: nginx:alpine
+    volumes:
+      - ./docker/proxy/conf.d:/etc/nginx/conf.d
+      - ./docker/proxy/certificates:/var/certificates
+    ports:
+      - "443:443"
+    networks:
+      - internal
+networks:
+  internal:
+    driver: bridge
+  
